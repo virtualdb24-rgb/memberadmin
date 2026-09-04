@@ -2,16 +2,45 @@
 <info>
 	<id>memberadmin</id>
 	<name>Gestion des membres</name>
-	<summary>Permettre aux site owners d'ajouter/retirer des membres dans des groupes autorisés par l'admin.</summary>
-	<description><![CDATA[Application restreinte : un utilisateur autorisé (site owner) ne peut que AJOUTER ou RETIRER des membres dans les groupes que l'admin lui a attribués. Aucune création/modification/suppression de compte n'est possible.]]></description>
-	<version>0.0.1</version>
+	<summary>Let site owners add or remove members in the groups delegated to them — and nothing else.</summary>
+	<description><![CDATA[
+**Restricted member management for Nextcloud.**
+
+A site owner (a person who manages client folders) can only **add or remove members** in the groups they are entitled to manage. The app gives them autonomy without ever letting them create, edit or delete accounts.
+
+**Groups managed automatically:**
+- groups delegated by an administrator (`occ memberadmin:grant`), and/or
+- groups for which the user is a Nextcloud **group admin**.
+
+**Workflow:**
+1. The administrator creates the accounts and the project groups (local groups).
+2. The site owner shares a team folder once with a group.
+3. Adding a new client/internal person = adding them to the group — access follows automatically.
+4. Removing a member = removing them from the group.
+
+**Security properties:**
+- Every request is authorized (non-delegated group → 403).
+- The `admin` group can never be managed.
+- A user can never remove their own account.
+- CSRF is enforced on state-changing calls.
+- Only member add/remove is exposed — no user create/edit/delete.
+- Works with local groups (accounts may come from LDAP/AD or OIDC/Azure; AD-synced groups are read-only).
+
+**Languages:** interface follows the user's Nextcloud language preference (English / French).
+	]]></description>
+	<version>0.0.2</version>
 	<licence>agpl</licence>
-	<author mail="admin@yallatb.io">MemberAdmin</author>
+	<author mail="virtualdb24-rgb@users.noreply.github.com">MemberAdmin</author>
 	<namespace>MemberAdmin</namespace>
+	<documentation>
+		<user>https://github.com/virtualdb24-rgb/memberadmin/blob/main/README.md</user>
+		<admin>https://github.com/virtualdb24-rgb/memberadmin/blob/main/README.md</admin>
+	</documentation>
 	<category>tools</category>
-	<website>https://cloud.yallatb.io</website>
-	<bugs>https://cloud.yallatb.io</bugs>
-	<screenshot></screenshot>
+	<website>https://github.com/virtualdb24-rgb/memberadmin</website>
+	<bugs>https://github.com/virtualdb24-rgb/memberadmin/issues</bugs>
+	<repository>https://github.com/virtualdb24-rgb/memberadmin</repository>
+	<screenshot type="large">https://raw.githubusercontent.com/virtualdb24-rgb/memberadmin/main/screenshots/admin.png</screenshot>
 	<dependencies>
 		<nextcloud min-version="27" max-version="34"/>
 	</dependencies>
