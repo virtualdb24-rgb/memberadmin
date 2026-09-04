@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<info>
+	<id>memberadmin</id>
+	<name>Gestion des membres</name>
+	<summary>Permettre aux site owners d'ajouter/retirer des membres dans des groupes autorisés par l'admin.</summary>
+	<description><![CDATA[Application restreinte : un utilisateur autorisé (site owner) ne peut que AJOUTER ou RETIRER des membres dans les groupes que l'admin lui a attribués. Aucune création/modification/suppression de compte n'est possible.]]></description>
+	<version>0.0.1</version>
+	<licence>agpl</licence>
+	<author mail="admin@yallatb.io">MemberAdmin</author>
+	<namespace>MemberAdmin</namespace>
+	<category>tools</category>
+	<website>https://cloud.yallatb.io</website>
+	<bugs>https://cloud.yallatb.io</bugs>
+	<screenshot></screenshot>
+	<dependencies>
+		<nextcloud min-version="27" max-version="34"/>
+	</dependencies>
+	<commands>
+		<command>OCA\MemberAdmin\Command\GrantCommand</command>
+		<command>OCA\MemberAdmin\Command\RevokeCommand</command>
+		<command>OCA\MemberAdmin\Command\ListCommand</command>
+		<command>OCA\MemberAdmin\Command\ImportCommand</command>
+	</commands>
+	<settings>
+		<admin>OCA\MemberAdmin\Settings\Admin</admin>
+		<admin-section>OCA\MemberAdmin\Settings\Section</admin-section>
+		<personal>OCA\MemberAdmin\Settings\Personal</personal>
+		<personal-section>OCA\MemberAdmin\Settings\PersonalSection</personal-section>
+	</settings>
+</info>

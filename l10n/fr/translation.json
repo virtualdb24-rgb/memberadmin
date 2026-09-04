@@ -1,0 +1,20 @@
+{
+	"translations": {
+		"Member management": "Gestion des membres",
+		"You can add or remove members in the groups assigned to you. You cannot create, edit or delete accounts.": "Vous pouvez ajouter ou retirer des membres dans les groupes qui vous ont été attribués. Vous ne pouvez ni créer, ni modifier, ni supprimer des comptes.",
+		"No group is assigned to you. Contact the administrator.": "Aucun groupe ne vous est attribué. Contactez l’administrateur.",
+		"Type to search for accounts…": "Tapez pour rechercher des comptes…",
+		"Search an internal/external account…": "Rechercher un compte (interne/externe)…",
+		"No account found.": "Aucun compte trouvé.",
+		"Add": "Ajouter",
+		"Remove": "Retirer",
+		"(already member)": "(déjà membre)",
+		"(you)": "(vous)",
+		"Member added to {group}.": "Membre ajouté à {group}.",
+		"Member removed from {group}.": "Membre retiré de {group}.",
+		"Error removing the member.": "Erreur lors du retrait du membre.",
+		"Error: user not found or not allowed.": "Erreur : utilisateur inexistant ou non autorisé.",
+		"You cannot remove yourself from a group.": "Vous ne pouvez pas vous retirer vous-même d'un groupe."
+	},
+	"pluralForm": "nplurals=2; plural=(n > 1);"
+}

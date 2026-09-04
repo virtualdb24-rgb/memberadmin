@@ -1,0 +1,9 @@
+# Release archives
+/memberadmin-*.tar.gz
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+# Git
+*.orig
