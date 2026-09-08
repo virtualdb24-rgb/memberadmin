@@ -67,7 +67,7 @@ class MemberController extends Controller {
 		return $ids;
 	}
 
-	/** Suffixes de nommage d'un "groupe de gestion" (ex: sigblow_gestion). */
+	/** Suffixes de nommage d'un "groupe de gestion" (ex: OrderHub-management). */
 	private const ROLE_SUFFIXES = [
 		'_gestion', '-gestion', '_gestionnaires', '-gestionnaires',
 		'_management', '-management', '_managers', '-managers',
