@@ -67,28 +67,58 @@ class MemberController extends Controller {
 		return $ids;
 	}
 
+	/** Suffixes de nommage d'un "groupe de gestion" (ex: sigblow_gestion). */
+	private const ROLE_SUFFIXES = [
+		'_gestion', '-gestion', '_gestionnaires', '-gestionnaires',
+		'_management', '-management', '_managers', '-managers',
+		'_owners', '-owners', '_admins', '-admins',
+	];
+
+	/** Prefixes auto derives des groupes de gestion auxquels l'utilisateur appartient. */
+	private function autoRolePrefixes(array $userGroups): array {
+		$prefixes = [];
+		foreach ($userGroups as $gid) {
+			foreach (self::ROLE_SUFFIXES as $suf) {
+				if (str_ends_with($gid, $suf)) {
+					$base = substr($gid, 0, -strlen($suf));
+					if ($base !== '') {
+						$prefixes[] = $base;
+					}
+					break;
+				}
+			}
+		}
+		return array_values(array_unique($prefixes));
+	}
+
 	/** Groupes derives des roles : membres d'un groupe-role gerent les groupes d'un prefixe. */
 	private function roleGroupsFor(string $uid): array {
 		$user = $this->session->getUser();
 		if ($user === null) {
 			return [];
 		}
-		$roles = $this->allowlist->rolesMap();
-		if ($roles === []) {
-			return [];
-		}
 		$userGroups = $this->groupManager->getUserGroupIds($user);
-		$out = [];
+		$roles = $this->allowlist->rolesMap();
+		$prefixes = [];
 		foreach ($userGroups as $gid) {
 			foreach ($roles[$gid] ?? [] as $prefix) {
-				if ($prefix === '') {
-					continue;
+				if ($prefix !== '') {
+					$prefixes[] = $prefix;
 				}
-				foreach ($this->groupManager->search($prefix) as $group) {
-					$candidate = $group->getGID();
-					if ($candidate !== 'admin' && str_starts_with($candidate, $prefix) && !in_array($candidate, $out, true)) {
-						$out[] = $candidate;
-					}
+			}
+		}
+		// Detection AUTOMATIQUE : <base>_gestion / <base>-gestion etc. -> gestion de <base>*
+		foreach ($this->autoRolePrefixes($userGroups) as $base) {
+			$prefixes[] = $base;
+		}
+		$prefixes = array_values(array_unique($prefixes));
+
+		$out = [];
+		foreach ($prefixes as $prefix) {
+			foreach ($this->groupManager->search($prefix) as $group) {
+				$candidate = $group->getGID();
+				if ($candidate !== 'admin' && str_starts_with($candidate, $prefix) && !in_array($candidate, $out, true)) {
+					$out[] = $candidate;
 				}
 			}
 		}
@@ -145,14 +175,20 @@ class MemberController extends Controller {
 	 * de tout l'annuaire.
 	 *
 	 * @NoAdminRequired
-	 * 
+	 * @NoCSRFRequired
 	 */
 	public function search(string $term = ''): DataResponse {
-		if ($this->currentUid() === null) {
+		$uid = $this->currentUid();
+		if ($uid === null) {
 			return new DataResponse(['error' => 'unauthorized'], 401);
 		}
+		// Restreindre la recherche aux comptes ayant au moins un groupe a gerer.
+		if ($this->allowedGroupsFor($uid) === []) {
+			return new DataResponse(['error' => 'forbidden'], 403);
+		}
 		$term = trim($term);
-		if ($term === '') {
+		// Longueur minimale pour eviter l'enumeration de l'annuaire.
+		if (strlen($term) < 2) {
 			return new DataResponse([]);
 		}
 		$res = [];

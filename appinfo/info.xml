@@ -28,7 +28,7 @@ A site owner (a person who manages client folders) can only **add or remove memb
 
 **Languages:** interface follows the user's Nextcloud language preference (English / French).
 	]]></description>
-	<version>0.0.3</version>
+	<version>0.0.4</version>
 	<licence>agpl</licence>
 	<author mail="virtualdb24-rgb@users.noreply.github.com">MemberAdmin</author>
 	<namespace>MemberAdmin</namespace>
