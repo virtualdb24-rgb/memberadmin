@@ -67,15 +67,45 @@ class MemberController extends Controller {
 		return $ids;
 	}
 
+	/** Groupes derives des roles : membres d'un groupe-role gerent les groupes d'un prefixe. */
+	private function roleGroupsFor(string $uid): array {
+		$user = $this->session->getUser();
+		if ($user === null) {
+			return [];
+		}
+		$roles = $this->allowlist->rolesMap();
+		if ($roles === []) {
+			return [];
+		}
+		$userGroups = $this->groupManager->getUserGroupIds($user);
+		$out = [];
+		foreach ($userGroups as $gid) {
+			foreach ($roles[$gid] ?? [] as $prefix) {
+				if ($prefix === '') {
+					continue;
+				}
+				foreach ($this->groupManager->search($prefix) as $group) {
+					$candidate = $group->getGID();
+					if ($candidate !== 'admin' && str_starts_with($candidate, $prefix) && !in_array($candidate, $out, true)) {
+						$out[] = $candidate;
+					}
+				}
+			}
+		}
+		return $out;
+	}
+
 	/**
 	 * Groupes gerables pour l'utilisateur courant :
 	 *  = groupes delegues (allowlist occ memberadmin:grant)
 	 *    UNION groupes dont il est admin de groupe (sub-admin)
+	 *    UNION groupes derives de ses roles (occ memberadmin:role)
 	 */
 	private function allowedGroupsFor(string $uid): array {
 		return array_values(array_unique(array_merge(
 			$this->allowlist->groupsFor($uid),
-			$this->subAdminGroups()
+			$this->subAdminGroups(),
+			$this->roleGroupsFor($uid)
 		)));
 	}
 

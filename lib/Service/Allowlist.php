@@ -13,6 +13,7 @@ use OCP\IConfig;
 class Allowlist {
 	public const APP = 'memberadmin';
 	public const KEY = 'allowed';
+	public const KEY_ROLES = 'roles';
 
 	private IConfig $config;
 
@@ -35,6 +36,42 @@ class Allowlist {
 		$m = $this->map();
 		$g = $m[$uid] ?? [];
 		return array_values(array_unique(array_filter(array_map('strval', is_array($g) ? $g : []))));
+	}
+
+	/* ----- Roles : membres d'un groupe-role gerent les groupes d'un prefixe ----- */
+
+	/** Carte roles : role_gid => liste de prefixes */
+	public function rolesMap(): array {
+		$raw = (string)$this->config->getAppValue(self::APP, self::KEY_ROLES, '{}');
+		$m = json_decode($raw, true);
+		return is_array($m) ? $m : [];
+	}
+
+	private function saveRoles(array $m): void {
+		$this->config->setAppValue(self::APP, self::KEY_ROLES, json_encode($m));
+	}
+
+	public function roleAddPrefix(string $role, string $prefix): void {
+		$m = $this->rolesMap();
+		$m[$role] = array_values(array_unique(array_merge($m[$role] ?? [], [$prefix])));
+		$this->saveRoles($m);
+	}
+
+	public function roleRemovePrefix(string $role, string $prefix): void {
+		$m = $this->rolesMap();
+		if (!isset($m[$role])) {
+			return;
+		}
+		$m[$role] = array_values(array_diff($m[$role], [$prefix]));
+		if (empty($m[$role])) {
+			unset($m[$role]);
+		}
+		$this->saveRoles($m);
+	}
+
+	public function roleList(string $role = ''): array {
+		$m = $this->rolesMap();
+		return $role === '' ? $m : ($m[$role] ?? []);
 	}
 
 	public function isAllowed(string $uid, string $gid): bool {
