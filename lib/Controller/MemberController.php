@@ -130,7 +130,10 @@ class MemberController extends Controller {
 			if ($group === null) {
 				continue;
 			}
-			$members = array_values(array_map(static fn ($u) => $u->getUID(), $group->getUsers()));
+			$members = [];
+			foreach ($group->getUsers() as $u) {
+				$members[] = ['uid' => $u->getUID(), 'display' => $u->getDisplayName()];
+			}
 			$out[] = ['gid' => $gid, 'members' => $members];
 		}
 		return new DataResponse($out);
@@ -161,7 +164,7 @@ class MemberController extends Controller {
 			if ($user->getUID() === 'admin') {
 				continue;
 			}
-			$res[] = $user->getUID();
+			$res[] = ['uid' => $user->getUID(), 'display' => $user->getDisplayName()];
 		}
 		return new DataResponse($res);
 	}

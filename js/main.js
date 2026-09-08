@@ -116,15 +116,18 @@
 			var shown = false;
 			(users || []).forEach(function (u) {
 				shown = true;
-				var isMember = cur.indexOf(u) >= 0;
+				var uid = u.uid || u;
+				var disp = u.display || uid;
+				var isMember = cur.indexOf(uid) >= 0;
 				var li = document.createElement('li');
-				li.textContent = isMember ? (u + ' ' + L('(already member)')) : u;
+				li.textContent = isMember ? (disp + ' ' + L('(already member)')) : disp;
+				li.title = uid;
 				if (isMember) {
 					li.className = 'memberadmin-dd-member';
 				} else {
 					li.addEventListener('mousedown', function (ev) {
 						ev.preventDefault();
-						addMemberName(gid, u);
+						addMemberName(gid, uid);
 						input.value = '';
 						closeDD();
 					});
@@ -178,7 +181,7 @@
 	}
 
 	function renderCard(grp) {
-		membersByGid[grp.gid] = grp.members || [];
+		membersByGid[grp.gid] = (grp.members || []).map(function (x) { return x.uid; });
 		var card = document.createElement('div');
 		card.className = 'memberadmin-card';
 
@@ -191,13 +194,16 @@
 		(grp.members || []).forEach(function (m) {
 			var li = document.createElement('li');
 			var span = document.createElement('span');
-			span.textContent = (m === OC.currentUser) ? (m + ' ' + L('(you)')) : m;
+			var label = m.display || m.uid;
+			if (m.uid === OC.currentUser) { label = label + ' ' + L('(you)'); }
+			span.textContent = label;
+			span.title = m.uid;
 			li.appendChild(span);
-			if (m !== OC.currentUser) {
+			if (m.uid !== OC.currentUser) {
 				var rm = document.createElement('button');
 				rm.className = 'button memberadmin-x';
 				rm.textContent = L('Remove');
-				rm.addEventListener('click', function () { removeMember(grp.gid, m); });
+				rm.addEventListener('click', function () { removeMember(grp.gid, m.uid); });
 				li.appendChild(rm);
 			}
 			list.appendChild(li);
