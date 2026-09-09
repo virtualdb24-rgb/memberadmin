@@ -40,9 +40,7 @@ A site owner (a person who manages client folders) can only **add or remove memb
 	<website>https://github.com/virtualdb24-rgb/memberadmin</website>
 	<bugs>https://github.com/virtualdb24-rgb/memberadmin/issues</bugs>
 	<repository>https://github.com/virtualdb24-rgb/memberadmin</repository>
-	<screenshot type="small">https://raw.githubusercontent.com/virtualdb24-rgb/memberadmin/main/screenshots/admin.png</screenshot>
-	<screenshot type="small">https://raw.githubusercontent.com/virtualdb24-rgb/memberadmin/main/screenshots/owner.png</screenshot>
-	<screenshot type="large">https://raw.githubusercontent.com/virtualdb24-rgb/memberadmin/main/screenshots/groups.png</screenshot>
+	<screenshot>https://raw.githubusercontent.com/virtualdb24-rgb/memberadmin/main/screenshots/admin.png</screenshot>
 	<dependencies>
 		<nextcloud min-version="27" max-version="34"/>
 	</dependencies>
