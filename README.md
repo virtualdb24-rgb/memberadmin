@@ -4,10 +4,9 @@
 
 [![Available on the Nextcloud App Store](https://img.shields.io/badge/Nextcloud%20App%20Store-memberadmin-0082C9)](https://apps.nextcloud.com/apps/memberadmin)
 
-> 📦 **App Store** : l'app est soumise et sa page est en ligne
-> (<https://apps.nextcloud.com/apps/memberadmin>). En attendant la validation
-> finale par l'équipe Nextcloud, vous pouvez l'installer manuellement depuis les
-> releases GitHub (voir [Installation](#installation)).
+> 📦 **App Store** : memberadmin est **publié** et disponible sur l'App Store
+> Nextcloud → https://apps.nextcloud.com/apps/memberadmin
+> (installation en un clic depuis la page Apps de votre instance).
 
 A Nextcloud app that lets an authorized user (a *site owner*) **add or remove group
 members** — and nothing else. Designed to give autonomy to people who manage client

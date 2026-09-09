@@ -3,8 +3,8 @@
 ## État actuel
 - Certificat **obtenu** (PR `nextcloud/app-certificate-requests#1222`, mergée).
 - App **enregistrée** et release **v0.0.5 téléversée** sur apps.nextcloud.com.
-- Page publique : https://apps.nextcloud.com/apps/memberadmin (en attente de la
-  validation finale → apparition dans le catalogue).
+- App **publiée** : https://apps.nextcloud.com/apps/memberadmin (visible et
+  installable depuis la page Apps d'une instance Nextcloud).
 
 ## 1. Dépôt GitHub
 - Repo : `virtualdb24-rgb/memberadmin` (public) — `main` = code à jour, versions taggées `vX.Y.Z`.
